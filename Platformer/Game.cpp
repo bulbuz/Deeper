@@ -42,7 +42,7 @@ bool Game::init() {
 		success = false;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == nullptr) {
 		std::cerr << "SDL_Error: " << SDL_GetError() << std::endl;
 		success = false;

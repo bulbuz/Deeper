@@ -4,22 +4,30 @@ Level::Level(int id, SDL_Renderer* g_Renderer) {
 	levelNumber = id;
 
 	renderer = g_Renderer;
+	running = 1;
 }
 
 void Level::run() {
 	init();
 
 	while (running) {
+		Uint64 start = SDL_GetPerformanceCounter();
+
 		handle_Events();
 		update();
 		render();
+
+		Uint64 end = SDL_GetPerformanceCounter();
+		double elapsed = (end - start) / (double)SDL_GetPerformanceFrequency();
+		start = end;
+
+		std::cout << "FPS: " << std::to_string(1 / elapsed) << "\n";
 	}
 }
 
 void Level::init() {
-	running = 1;
 	tiles.load_TextureFromFile(renderer, "res/tiles.png");
-	load_Map("res/map" + std::to_string(levelNumber) + ".csv");
+	load_Map("res/map" + std::to_string(levelNumber) + ".txt");
 }
 
 void Level::update() {
@@ -43,7 +51,7 @@ void Level::handle_Events() {
 
 void Level::render() {
 	// clear screen
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 24, 20, 37, 255);
 	SDL_RenderClear(renderer);
 
 	draw_Map();
@@ -61,16 +69,12 @@ void Level::load_Map(std::string fileName) {
 			for (int j = 0; j < MAP_WIDTH; ++j) {
 				int id;
 				fin >> id;
+				map[i][j] = Tile();
 				if (id != -1) {
-					map[i][j] = Tile();
 					SDL_Rect dim{ (id / 32) * TILE_SIZE, (id % 32) * TILE_SIZE, TILE_SIZE, TILE_SIZE };
 					map[i][j].init(&dim);
-					map[i][j].setId(id);
 				}
-				else {
-					map[i][j] = Tile();
-					map[i][j].setId(-1);
-				}
+				map[i][j].setId(id);
 			}
 		}
 	} else {
