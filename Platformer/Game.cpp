@@ -17,8 +17,8 @@ bool Game::init() {
 	bool success = true;
 	running = true;
 
-	WINDOW_WIDTH = 1080;
-	WINDOW_HEIGHT = 720;
+	WINDOW_WIDTH = TILE_SIZE * SCALE * MAP_WIDTH;
+	WINDOW_HEIGHT = TILE_SIZE * SCALE * MAP_HEIGHT;
 	TITLE = "Deeper";
 
 	window = nullptr;

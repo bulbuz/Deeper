@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "Level.h"
 #include "RoomManager.h"
+#include "Utils.h"
 
 class Game
 {

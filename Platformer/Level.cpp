@@ -2,7 +2,6 @@
 
 Level::Level(int id, SDL_Renderer* g_Renderer) {
 	levelNumber = id;
-	init();
 
 	renderer = g_Renderer;
 }
@@ -18,15 +17,9 @@ void Level::run() {
 }
 
 void Level::init() {
-	load_Map("map" + std::to_string(levelNumber) + ".csv");
-}
-
-void Level::draw_Map() {
-	for (int i = 0; i < MAP_HEIGHT; ++i) {
-		for (int j = 0; j < MAP_WIDTH; ++j) {
-			map[i][j].render(renderer);
-		}
-	}
+	running = 1;
+	tiles.load_TextureFromFile(renderer, "res/tiles.png");
+	load_Map("res/map" + std::to_string(levelNumber) + ".csv");
 }
 
 void Level::update() {
@@ -61,25 +54,36 @@ void Level::render() {
 
 void Level::load_Map(std::string fileName) {
 	std::fstream fin;
-
-	puts(fileName.c_str());
 	fin.open(fileName);
-	std::string line;
-	if (fin.is_open()) {
-		int row = 0;
-		while (std::getline(fin, line)) {
-			int column = 0;
-			for (char c : line) {
-				if (c != ',') {
-					map[row++][column++] = Tile();
 
-					// initialize the tiles dimensions
-					SDL_Rect dim{row * TILE_SIZE, column * TILE_SIZE, TILE_SIZE, TILE_SIZE};
-					map[row][column].init(&dim);
+	if (fin.is_open()) {
+		for (int i = 0; i < MAP_HEIGHT; ++i) {
+			for (int j = 0; j < MAP_WIDTH; ++j) {
+				int id;
+				fin >> id;
+				if (id != -1) {
+					map[i][j] = Tile();
+					SDL_Rect dim{ (id / 32) * TILE_SIZE, (id % 32) * TILE_SIZE, TILE_SIZE, TILE_SIZE };
+					map[i][j].init(&dim);
+					map[i][j].setId(id);
+				}
+				else {
+					map[i][j] = Tile();
+					map[i][j].setId(-1);
 				}
 			}
 		}
 	} else {
 		std::cerr << "Couldn't open map!" << std::endl;
+	}
+}
+
+void Level::draw_Map() {
+	for (int i = 0; i < MAP_HEIGHT; ++i) {
+		for (int j = 0; j < MAP_WIDTH; ++j) {
+			if (map[i][j].getId() != -1) {
+				tiles.render(renderer, j * TILE_SIZE, i * TILE_SIZE, &map[i][j].hitbox);
+			}
+		}
 	}
 }

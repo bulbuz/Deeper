@@ -4,15 +4,18 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <filesystem>
 
 #include "Utils.h"
 #include "Tile.h"
+#include "Texture.h"
 
 class Level {
 public:
 	Level(int id, SDL_Renderer* g_Renderer);
 	void run();
 	bool running;
+	Texture tiles;
 
 private:
 	void init();

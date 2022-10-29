@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "Utils.h"
 
 Texture::Texture() {
 	WIDTH = 0;
@@ -46,9 +47,15 @@ void Texture::load_TextureFromFile(SDL_Renderer* renderer, std::string filePath)
 	texture = finalTexture;
 }
 
-void Texture::render(SDL_Renderer* renderer, int x, int y) {
-	SDL_Rect renderRect = { x, y, WIDTH, HEIGHT };
-	SDL_RenderCopy(renderer, texture, 0, &renderRect);
+void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
+	SDL_Rect renderRect{x * SCALE, y * SCALE, WIDTH, HEIGHT};
+
+	if (clip != nullptr) {
+		renderRect.w = clip->w * SCALE;
+		renderRect.h = clip->h * SCALE;
+	}
+
+	SDL_RenderCopy(renderer, texture, clip, &renderRect);
 }
 
 int Texture::getWidth() {
