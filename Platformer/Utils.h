@@ -6,6 +6,8 @@
 #define TILE_SIZE 8
 #define SCALE 4
 
+#define FPS 60
+
 #define BLACK (0, 0, 0)
 #define WHITE (255, 255, 255)
 

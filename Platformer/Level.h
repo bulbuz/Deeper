@@ -5,28 +5,32 @@
 #include <string>
 #include <iostream>
 #include <string>
+#include <math.h>
 
 #include "Utils.h"
 #include "Tile.h"
 #include "Texture.h"
+#include "Player.h"
 
 class Level {
 public:
 	Level(int id, SDL_Renderer* g_Renderer);
 	void run();
 	bool running;
-	Texture tiles;
 
 private:
 	void init();
 	void render();
 	void handle_Events();
-	void update();
+	void update(double dt);
 
 	int levelNumber;
 	void load_Map(std::string fileName);
 	void draw_Map();
 	
+	int gravity;
+	Player player;
+	Texture tiles;
 	Tile map[MAP_HEIGHT][MAP_WIDTH];
 	SDL_Renderer* renderer;
 };

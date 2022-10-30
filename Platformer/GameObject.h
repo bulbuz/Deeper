@@ -7,7 +7,6 @@
 
 class GameObject {
 public:
-	virtual void update();
 	void render(SDL_Renderer* renderer);
 	void load_Texture(SDL_Renderer* renderer, std::string path);
 	void init(SDL_Rect* dimensions);

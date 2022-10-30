@@ -7,11 +7,6 @@ void GameObject::init(SDL_Rect* dimensions) {
 	hitbox = *dimensions;
 }
 
-void GameObject::update() {
-	hitbox.x = pos.x;
-	hitbox.y = pos.y;
-}
-
 void GameObject::render(SDL_Renderer* renderer) {
 	texture.render(renderer, pos.x, pos.y);
 }
