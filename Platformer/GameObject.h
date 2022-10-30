@@ -9,7 +9,7 @@ class GameObject {
 public:
 	void render(SDL_Renderer* renderer);
 	void load_Texture(SDL_Renderer* renderer, std::string path);
-	void init(SDL_Rect* dimensions);
+	void init(SDL_Rect dimensions);
 
 	Vec2 pos;
 	SDL_Rect hitbox;

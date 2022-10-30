@@ -1,6 +1,7 @@
 #pragma once
 
-#include <math.h>
+#include <algorithm>
+#include <vector>
 
 #include "Utils.h"
 #include "GameObject.h"
@@ -8,9 +9,8 @@
 class Player : public GameObject {
 public:
 	Player();
-	Dir dir;
 	void update(double dt);
+	Dir dir;
+	Vec2 vel;
 
-private:
-	int vel;
 };

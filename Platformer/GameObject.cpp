@@ -1,10 +1,10 @@
 #include "GameObject.h"
 
-void GameObject::init(SDL_Rect* dimensions) {
-	pos.x = dimensions->x;
-	pos.y = dimensions->y;
+void GameObject::init(SDL_Rect dimensions) {
+	pos.x = dimensions.x;
+	pos.y = dimensions.y;
 
-	hitbox = *dimensions;
+	hitbox = dimensions;
 }
 
 void GameObject::render(SDL_Renderer* renderer) {

@@ -12,8 +12,8 @@
 #define WHITE (255, 255, 255)
 
 struct Vec2 {
-	int x;
-	int y;
+	double x;
+	double y;
 };
 
 struct Dir {

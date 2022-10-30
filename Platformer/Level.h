@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <vector>
 
 #include "Utils.h"
 #include "Tile.h"
@@ -28,9 +29,9 @@ private:
 	void load_Map(std::string fileName);
 	void draw_Map();
 	
-	int gravity;
 	Player player;
 	Texture tiles;
 	Tile map[MAP_HEIGHT][MAP_WIDTH];
 	SDL_Renderer* renderer;
+	std::vector<SDL_Rect> collidables;
 };
