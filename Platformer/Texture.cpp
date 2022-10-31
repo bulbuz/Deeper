@@ -47,12 +47,12 @@ void Texture::load_TextureFromFile(SDL_Renderer* renderer, std::string filePath)
 	texture = finalTexture;
 }
 
-void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
-	SDL_Rect renderRect{x * SCALE, y * SCALE, WIDTH, HEIGHT};
+void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, int scale) {
+	SDL_Rect renderRect{x, y, WIDTH * scale, HEIGHT * scale};
 
 	if (clip != nullptr) {
-		renderRect.w = clip->w * SCALE;
-		renderRect.h = clip->h * SCALE;
+		renderRect.w = clip->w * scale;
+		renderRect.h = clip->h * scale;
 	}
 
 	SDL_RenderCopy(renderer, texture, clip, &renderRect);

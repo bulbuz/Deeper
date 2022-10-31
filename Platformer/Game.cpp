@@ -17,8 +17,8 @@ bool Game::init() {
 	bool success = true;
 	running = true;
 
-	WINDOW_WIDTH = TILE_SIZE * SCALE * MAP_WIDTH;
-	WINDOW_HEIGHT = TILE_SIZE * SCALE * MAP_HEIGHT;
+	WINDOW_WIDTH = TILE_SIZE * MAP_WIDTH;
+	WINDOW_HEIGHT = TILE_SIZE * MAP_HEIGHT;
 	TITLE = "Deeper";
 
 	window = nullptr;
@@ -42,7 +42,7 @@ bool Game::init() {
 		success = false;
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == nullptr) {
 		std::cerr << "SDL_Error: " << SDL_GetError() << std::endl;
 		success = false;

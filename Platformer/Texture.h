@@ -11,7 +11,7 @@ public:
 
 	void load_TextureFromFile(SDL_Renderer* renderer, std::string filePath);
 	void free();
-	void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = nullptr);
+	void render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = nullptr, int scale = 1);
 
 	int getWidth();
 	int getHeight();
