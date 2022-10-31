@@ -38,34 +38,37 @@ void Level::init() {
 	player.load_Texture(renderer, "res/player.png"); 
 
 	// get collidable tiles
-	int cnt = 0;
 	for (int i = 0; i < MAP_HEIGHT; ++i) {
 		for (int j = 0; j < MAP_WIDTH; ++j) {
 			if (map[i][j].getId() == -1)
 				continue;
 
+			bool ok = 0;
 			if (i > 0) {
 				if (map[i - 1][j].getId() == -1) {
-					collidables.push_back(map[i - 1][j].hitbox);
+					ok = 1;
 				}
 			}
 			if (j > 0) {
 				if (map[i][j - 1].getId() == -1) {
-					collidables.push_back(map[i][j - 1].hitbox);
+					ok = 1;
 				}
 			}
 
 			if (i < MAP_HEIGHT - 1) {
 				if (map[i + 1][j].getId() == -1) {
-					collidables.push_back(map[i + 1][j].hitbox);
+					ok = 1;
 				}
 			}
 			if (j < MAP_WIDTH - 1) {
 				if (map[i][j + 1].getId() == -1) {
-					collidables.push_back(map[i][j + 1].hitbox);
+					ok = 1;
 				}
 			}
-
+			 
+			// add tile to collidables list if edge
+			if(ok)
+				collidables.push_back(map[i][j].hitbox); 
 		}
 	}
 }
@@ -76,7 +79,8 @@ void Level::update(double dt) {
 	for (SDL_Rect tile : collidables) {
 		if (SDL_HasIntersection(&tile, &player.hitbox)) {
 			if (player.vel.y > 0) {
-				player.pos.y = tile.y + player.hitbox.y;
+				player.pos.y = tile.y - player.hitbox.h;
+				player.vel.y = 0;
 			}
 		}
 	}
@@ -136,14 +140,14 @@ void Level::load_Map(std::string fileName) {
 				int id;
 				fin >> id;
 				map[i][j] = Tile();
-				if (id != -1) {
-					SDL_Rect dim{i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE };
+				map[i][j].setId(id);
 
+				if (id != -1) {
+					SDL_Rect dim{j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE};
 					map[i][j].sprite_sheet_location.x = (id / 32) * TILE_SIZE / SCALE;
 					map[i][j].sprite_sheet_location.y = (id % 32) * TILE_SIZE / SCALE;
 					map[i][j].init(dim);
 				}
-				map[i][j].setId(id);
 			}
 		}
 	} else {
@@ -156,9 +160,11 @@ void Level::draw_Map() {
 		for (int j = 0; j < MAP_WIDTH; ++j) {
 			if (map[i][j].getId() != -1) {
 				// initialize the clip in the spritesheet
-				auto vec = map[i][j].sprite_sheet_location;
+				Vec2 vec = map[i][j].sprite_sheet_location;
 				SDL_Rect r{vec.x, vec.y, TILE_SIZE / SCALE, TILE_SIZE / SCALE};
-				tiles.render(renderer, j * TILE_SIZE, i * TILE_SIZE, &r, SCALE);
+
+				// renders the tile from the spritesheet
+				tiles.render(renderer, map[i][j].hitbox.x, map[i][j].hitbox.y, &r, SCALE);
 			}
 		}
 	}
