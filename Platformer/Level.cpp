@@ -65,7 +65,7 @@ void Level::init() {
 					ok = 1;
 				}
 			}
-			 
+
 			// add tile to collidables list if edge
 			if(ok)
 				collidables.push_back(map[i][j].hitbox); 
@@ -74,16 +74,8 @@ void Level::init() {
 }
 
 void Level::update(double dt) {
-	player.update(dt);
 
-	for (SDL_Rect tile : collidables) {
-		if (SDL_HasIntersection(&tile, &player.hitbox)) {
-			if (player.vel.y > 0) {
-				player.pos.y = tile.y - player.hitbox.h;
-				player.vel.y = 0;
-			}
-		}
-	}
+	player.update(dt, collidables);
 }
 
 void Level::handle_Events() {
