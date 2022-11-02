@@ -7,13 +7,10 @@ void GameObject::init(SDL_Rect dimensions) {
 	if (pos.x && pos.y) {
 		hitbox.x = pos.x;
 		hitbox.y = pos.y;
-	}
-	else {
-
+	} else {
 		pos.x = dimensions.x;
 		pos.y = dimensions.y;
 	}
-
 }
 
 void GameObject::render(SDL_Renderer* renderer) {

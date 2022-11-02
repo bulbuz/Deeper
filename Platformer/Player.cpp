@@ -4,7 +4,7 @@ Player::Player() {
 	dir.right = 0;
 	dir.left = 0;
 
-	pos.x = 64;
+	pos.x = 500;
 	pos.y = 0;
 
 	vel.x = 0;
@@ -32,7 +32,7 @@ void Player::update(double dt, std::vector<SDL_Rect> collidables) {
 		reset = 0;
 	}
 	// movement and gravity
-	const double speed = 250.0;
+	const double speed = 300.0;
 	double gravity = 60.0;
 
 	if (dir.right) {
@@ -44,6 +44,8 @@ void Player::update(double dt, std::vector<SDL_Rect> collidables) {
 	}
 
 	vel.y += (gravity * gravity * dt) * dt;
+
+	// gravity clamp
 	vel.y = std::min(13.0, vel.y);
 
 	if (jump && ready_to_jump) {
@@ -51,7 +53,6 @@ void Player::update(double dt, std::vector<SDL_Rect> collidables) {
 		ready_to_jump = 0;
 	}
 
-	// todo: window boundaries
 
 	SDL_Rect player_rectX = hitbox;
 	SDL_Rect player_rectY = hitbox;
@@ -78,10 +79,13 @@ void Player::update(double dt, std::vector<SDL_Rect> collidables) {
 			}
 		}
 	}
-	std::cout << dx << " " << dy << "\n";
 
 	pos.x += dx;
 	pos.y += floor(dy);
+
+	// window boundaries
+	pos.x = std::max(0.0, pos.x);
+	pos.x = std::min((double)WINDOW_WIDTH - hitbox.w, pos.x);
 
 	hitbox.x = round(pos.x);
 	hitbox.y = round(pos.y);

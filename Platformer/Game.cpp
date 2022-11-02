@@ -17,8 +17,6 @@ bool Game::init() {
 	bool success = true;
 	running = true;
 
-	WINDOW_WIDTH = TILE_SIZE * MAP_WIDTH;
-	WINDOW_HEIGHT = TILE_SIZE * MAP_HEIGHT;
 	TITLE = "Deeper";
 
 	window = nullptr;
@@ -34,7 +32,7 @@ bool Game::init() {
 		success = false;
 	}
 
-	window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	window = SDL_CreateWindow(TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 
 	if (window == nullptr) {

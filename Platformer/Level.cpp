@@ -6,14 +6,13 @@ Level::Level(int id, SDL_Renderer* g_Renderer) {
 
 	renderer = g_Renderer;
 	running = 1;
+	dt = 0.0;
 }
 
 void Level::run() {
 	init();
 
 	// main 
-	double dt = 0;
-	Uint32 desiredDelta = 1000 / FPS;
 	Uint64 now = SDL_GetPerformanceCounter();
 	Uint64 last = 0;
 	while (running) {
@@ -74,7 +73,6 @@ void Level::init() {
 }
 
 void Level::update(double dt) {
-
 	player.update(dt, collidables);
 }
 
@@ -120,14 +118,47 @@ void Level::handle_Events() {
 	}
 }
 
+void Level::lighting() {
+	// do some shadow stuff
+	SDL_Rect shadow{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
+	SDL_RenderFillRect(renderer, &shadow);
+
+	int rect_radius = 96 * 3;
+	SDL_Rect player_light{player.pos.x - (rect_radius / 2) + (player.hitbox.w / 2), player.pos.y - (rect_radius / 2) + (player.hitbox.h / 4), rect_radius,  rect_radius};
+
+	int xMid = player_light.w / 2;
+	int yMid = player_light.h / 2;
+	double radius = player.pos.x - player_light.x;
+	int pixel_size = 8;
+	for (int i = 0; i < player_light.h / pixel_size; ++i) {
+		for (int j = 0; j < player_light.w / pixel_size; ++j) {
+			double dist = (double)sqrt(pow(j * pixel_size - yMid, 2) + pow(i * pixel_size - xMid, 2));
+			if (dist <= radius) {
+				SDL_Rect pixel{player_light.x + j * pixel_size, player_light.y + i * pixel_size, pixel_size, pixel_size};
+
+				double dim_level = dist / radius;
+				int alpha = std::min(round(2.0 * (1 / dim_level)), 10.0);
+				SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, alpha);
+				SDL_RenderFillRect(renderer, &pixel);
+			}
+		}
+	}
+}
+
 void Level::render() {
 	// clear screen
 	SDL_SetRenderDrawColor(renderer, 23, 19, 33, 255);
-
 	SDL_RenderClear(renderer);
 
+	// draw entities
 	draw_Map();
 	player.render(renderer);
+
+	// do lighting thingy
+	lighting();
 
 	// present buffer
 	SDL_RenderPresent(renderer);

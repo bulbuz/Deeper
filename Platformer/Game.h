@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <vector>
+#include <string>
 
 #include "GameObject.h"
 #include "Player.h"
@@ -26,9 +27,7 @@ private:
 	void cleanup();
 
 	bool running;
-	int WINDOW_WIDTH;
-	int WINDOW_HEIGHT; 
-	const char* TITLE;
+	std::string TITLE;
 
 	RoomManager room_Mgr;
 	std::vector<Level> world;

@@ -6,10 +6,8 @@
 #define SCALE 4
 #define TILE_SIZE 8 * SCALE
 
-#define FPS 60
-
-#define BLACK (0, 0, 0)
-#define WHITE (255, 255, 255)
+#define WINDOW_WIDTH TILE_SIZE * MAP_WIDTH
+#define WINDOW_HEIGHT TILE_SIZE * MAP_HEIGHT
 
 struct Vec2 {
 	double x;

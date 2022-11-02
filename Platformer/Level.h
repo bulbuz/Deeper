@@ -28,10 +28,13 @@ private:
 	int levelNumber;
 	void load_Map(std::string fileName);
 	void draw_Map();
+	void lighting();
 	
 	Player player;
 	Texture tiles;
 	Tile map[MAP_HEIGHT][MAP_WIDTH];
 	SDL_Renderer* renderer;
 	std::vector<SDL_Rect> collidables;
+
+	double dt;
 };
