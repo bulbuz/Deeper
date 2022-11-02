@@ -96,6 +96,13 @@ void Level::handle_Events() {
 			if (event.key.keysym.sym == SDLK_a) {
 				player.dir.left = 1;
 			}
+
+			if (event.key.keysym.sym == SDLK_SPACE) {
+				player.jump = 1;
+			}
+			if (event.key.keysym.sym == SDLK_r) {
+				player.reset = 1;
+			}
 		}
 		if (event.type == SDL_KEYUP) {
 			if (event.key.keysym.sym == SDLK_d) {
@@ -104,6 +111,10 @@ void Level::handle_Events() {
 
 			if (event.key.keysym.sym == SDLK_a) {
 				player.dir.left = 0;
+			}
+
+			if (event.key.keysym.sym == SDLK_SPACE) {
+				player.jump = 0;
 			}
 		}
 	}

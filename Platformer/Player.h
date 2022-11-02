@@ -13,5 +13,8 @@ public:
 	void update(double dt, std::vector<SDL_Rect> collidables);
 	Dir dir;
 	Vec2 vel;
-
+	bool jump;
+	bool reset; // debugging
+private:
+	bool ready_to_jump;
 };
